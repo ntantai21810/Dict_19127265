@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -26,12 +27,27 @@ public class Utils {
         dialog.setVisible(true);
     }
 
-    public HashMap<String, Vector<String>> readFile(JFrame frame, String path) {
+    public Object[][] convertToObjectArray(HashMap<String, String> list) {
+        Object[][] result = new Object[list.size()][];
+        int index = 0;
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = new Object[]{};
+        }
+        for (Map.Entry<String, String> e : list.entrySet()) {
+            result[index++] = new Object[]{e.getKey(), e.getValue()};
+        }
+        return result;
+    }
+
+    public HashMap<String, String> readFile(JFrame frame, String path) {
         File f = new File(path);
 
-        HashMap<String, Vector<String>> list = new HashMap<>();
+        HashMap<String, String> list = new HashMap<>();
 
-        if (!f.isFile()) return list;
+        if (!f.isFile()) {
+            showDialog(frame, "File not found");
+            return list;
+        }
 
         //File is not empty
         if (f.length() != 0) {
@@ -56,9 +72,7 @@ public class Utils {
                 if (s != null) {
                     String[] temp = s.split("`");
                     if (temp.length == 2) {
-                        Vector<String> value = new Vector<>();
-                        value.add(temp[1]);
-                        list.put(temp[0], value);
+                        list.put(temp[0], temp[1]);
                     }
                 }
             } while (s != null);
