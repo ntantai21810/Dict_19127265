@@ -119,10 +119,8 @@ public class Main implements ActionListener {
                 for (Map.Entry<String, String> entry : list.entrySet()) {
                     if (entry.getValue().toLowerCase(Locale.ROOT).contains(searchString.toLowerCase(Locale.ROOT))) {
                         filterDef.put(entry.getKey(), entry.getValue());
-                        historyList.addFirst(entry.getKey() + "`" + entry.getValue());
                     }
                 }
-                historyTable.setModel(new DefaultTableModel(utils.convertToObjectArray(historyList), columns));
                 searchByDefTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filterDef), columns));
                 break;
             }
