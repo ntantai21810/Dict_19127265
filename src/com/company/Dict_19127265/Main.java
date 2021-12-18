@@ -5,9 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class Main implements ActionListener {
     public Utils utils = new Utils();
@@ -16,7 +14,8 @@ public class Main implements ActionListener {
     public HashMap<String, String> filter = new HashMap<>();
     public HashMap<String, String> filterDef = new HashMap<>();
     public HashMap<String, String> list = utils.readFile(frame, "slang.txt");
-    JTable searchBySlangTable, searchByDefTable;
+    public LinkedList<String> historyList = new LinkedList<>();
+    JTable searchBySlangTable, searchByDefTable, historyTable;
     JTextField searchBySlangInput, searchByDefInput;
 
     public Main() {
@@ -34,8 +33,10 @@ public class Main implements ActionListener {
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         searchBySlangBtn.setActionCommand("search-by-slang");
         searchByDefBtn.setActionCommand("search-by-def");
+        showHistoryBtn.setActionCommand("show-history");
         searchBySlangBtn.addActionListener(hc);
         searchByDefBtn.addActionListener(hc);
+        showHistoryBtn.addActionListener(hc);
         left.add(searchBySlangBtn);
         left.add(searchByDefBtn);
         left.add(showHistoryBtn);
@@ -56,6 +57,18 @@ public class Main implements ActionListener {
         searchBySlangCard.add(searchSlang);
         searchBySlangCard.add(new JScrollPane(searchBySlangTable));
         right.add(searchBySlangCard, "search-by-slang");
+
+        JPanel showHistoryCard = new JPanel();
+        showHistoryCard.setLayout(new BoxLayout(showHistoryCard, BoxLayout.Y_AXIS));
+        JLabel showHistoryLabel = new JLabel("History");
+        JPanel showHistoryLabelContainer = new JPanel();
+        historyTable = new JTable();
+        historyTable.setModel(new DefaultTableModel(utils.convertToObjectArray(historyList), columns));
+        showHistoryLabelContainer.add(showHistoryLabel);
+        showHistoryCard.add(showHistoryLabelContainer);
+        showHistoryCard.add(new JScrollPane(historyTable));
+        right.add(showHistoryCard, "show-history");
+
 
         JPanel searchByDefCard = new JPanel();
         JPanel searchByDefHeading = new JPanel();
@@ -95,7 +108,9 @@ public class Main implements ActionListener {
                 String value = list.get(searchString);
                 filter.clear();
                 filter.put(searchString, value);
+                historyList.addFirst(searchString + "`" + value);
                 searchBySlangTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filter), columns));
+                historyTable.setModel(new DefaultTableModel(utils.convertToObjectArray(historyList), columns));
                 break;
             }
             case "search-def": {
@@ -104,8 +119,10 @@ public class Main implements ActionListener {
                 for (Map.Entry<String, String> entry : list.entrySet()) {
                     if (entry.getValue().toLowerCase(Locale.ROOT).contains(searchString.toLowerCase(Locale.ROOT))) {
                         filterDef.put(entry.getKey(), entry.getValue());
+                        historyList.addFirst(entry.getKey() + "`" + entry.getValue());
                     }
                 }
+                historyTable.setModel(new DefaultTableModel(utils.convertToObjectArray(historyList), columns));
                 searchByDefTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filterDef), columns));
                 break;
             }

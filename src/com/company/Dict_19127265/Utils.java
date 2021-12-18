@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -30,11 +31,16 @@ public class Utils {
     public Object[][] convertToObjectArray(HashMap<String, String> list) {
         Object[][] result = new Object[list.size()][];
         int index = 0;
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = new Object[]{};
-        }
         for (Map.Entry<String, String> e : list.entrySet()) {
             result[index++] = new Object[]{e.getKey(), e.getValue()};
+        }
+        return result;
+    }
+
+    public Object[][] convertToObjectArray(LinkedList<String> list) {
+        Object[][] result = new Object[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = new Object[]{list.get(i).split("`")[0], list.get(i).split("`")[1]};
         }
         return result;
     }

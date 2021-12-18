@@ -31,6 +31,10 @@ public class HandleCard implements ActionListener {
                 cl.show(card, "search-by-def");
                 break;
             }
+            case "show-history": {
+                cl.show(card, "show-history");
+                break;
+            }
             default:
                 break;
         }
