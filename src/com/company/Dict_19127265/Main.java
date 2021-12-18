@@ -3,17 +3,26 @@ package com.company.Dict_19127265;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
-public class Main {
-    public static void main(String[] args) {
-        Utils utils = new Utils();
+public class Main implements ActionListener {
+    public Utils utils = new Utils();
+    public JFrame frame = new JFrame("Dict");
+    String[] columns = new String[]{"Slang", "Definition"};
+    public HashMap<String, String> filter = new HashMap<>();
+    public HashMap<String, String> filterDef = new HashMap<>();
+    public HashMap<String, String> list = utils.readFile(frame, "slang.txt");
+    JTable searchBySlangTable, searchByDefTable;
+    JTextField searchBySlangInput, searchByDefInput;
+
+    public Main() {
         JPanel right = new JPanel();
-        String[] columns = new String[]{"Slang", "Definition"};
         right.setLayout(new CardLayout());
         HandleCard hc = new HandleCard(right);
-        JFrame frame = new JFrame("Dict");
-        HashMap<String, String> list = utils.readFile(frame, "slang.txt");
 
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout());
@@ -34,26 +43,34 @@ public class Main {
         JPanel searchBySlangCard = new JPanel();
         JPanel searchBySlangHeading = new JPanel();
         JLabel searchBySlagLabel = new JLabel("Enter slang");
-        JTextField searchBySlangInput = new JTextField(20);
-        JTable searchBySlangTable = new JTable();
-        searchBySlangTable.setModel(new DefaultTableModel(utils.convertToObjectArray(list), columns));
+        searchBySlangInput = new JTextField(20);
+        searchBySlangTable = new JTable();
+        JButton searchSlang = new JButton("Search");
+        searchSlang.setActionCommand("search-slang");
+        searchSlang.addActionListener(this);
+        searchBySlangTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filter), columns));
         searchBySlangCard.setLayout(new BoxLayout(searchBySlangCard, BoxLayout.Y_AXIS));
         searchBySlangHeading.add(searchBySlagLabel);
         searchBySlangHeading.add(searchBySlangInput);
         searchBySlangCard.add(searchBySlangHeading);
+        searchBySlangCard.add(searchSlang);
         searchBySlangCard.add(new JScrollPane(searchBySlangTable));
         right.add(searchBySlangCard, "search-by-slang");
 
         JPanel searchByDefCard = new JPanel();
         JPanel searchByDefHeading = new JPanel();
         JLabel searchByDefLabel = new JLabel("Enter definition");
-        JTextField searchByDefInput = new JTextField(20);
-        JTable searchByDefTable = new JTable();
-        searchByDefTable.setModel(new DefaultTableModel(utils.convertToObjectArray(list), columns));
+        searchByDefInput = new JTextField(20);
+        searchByDefTable = new JTable();
+        JButton searchDef = new JButton("Search");
+        searchDef.setActionCommand("search-def");
+        searchDef.addActionListener(this);
+        searchByDefTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filterDef), columns));
         searchByDefCard.setLayout(new BoxLayout(searchByDefCard, BoxLayout.Y_AXIS));
         searchByDefHeading.add(searchByDefLabel);
         searchByDefHeading.add(searchByDefInput);
         searchByDefCard.add(searchByDefHeading);
+        searchByDefCard.add(searchDef);
         searchByDefCard.add(new JScrollPane(searchByDefTable));
         right.add(searchByDefCard, "search-by-def");
 
@@ -64,5 +81,34 @@ public class Main {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
+    }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "search-slang": {
+                String searchString = searchBySlangInput.getText();
+                String value = list.get(searchString);
+                filter.clear();
+                filter.put(searchString, value);
+                searchBySlangTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filter), columns));
+                break;
+            }
+            case "search-def": {
+                String searchString = searchByDefInput.getText();
+                filterDef.clear();
+                for (Map.Entry<String, String> entry : list.entrySet()) {
+                    if (entry.getValue().toLowerCase(Locale.ROOT).contains(searchString.toLowerCase(Locale.ROOT))) {
+                        filterDef.put(entry.getKey(), entry.getValue());
+                    }
+                }
+                searchByDefTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filterDef), columns));
+                break;
+            }
+        }
     }
 }
