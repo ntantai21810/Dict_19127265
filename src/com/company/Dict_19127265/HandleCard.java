@@ -35,6 +35,9 @@ public class HandleCard implements ActionListener {
                 cl.show(card, "show-history");
                 break;
             }
+            case "add-word": {
+                cl.show(card, "add-word");
+            }
             default:
                 break;
         }
