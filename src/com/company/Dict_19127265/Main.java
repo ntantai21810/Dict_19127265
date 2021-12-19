@@ -18,6 +18,7 @@ public class Main implements ActionListener {
     JTable searchBySlangTable, searchByDefTable, historyTable;
     JTextField searchBySlangInput, searchByDefInput;
     JTextField inputSlangInput, inputDefInput;
+    JTextField editSlangInput, editDefInput;
 
     public Main() {
         JPanel right = new JPanel();
@@ -32,19 +33,23 @@ public class Main implements ActionListener {
         JButton searchByDefBtn = new JButton("Search by definition");
         JButton showHistoryBtn = new JButton("Show history");
         JButton addNewWordBtn = new JButton("Add new word");
+        JButton editWordBtn = new JButton("Edit word");
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         searchBySlangBtn.setActionCommand("search-by-slang");
         searchByDefBtn.setActionCommand("search-by-def");
         showHistoryBtn.setActionCommand("show-history");
         addNewWordBtn.setActionCommand("add-word");
+        editWordBtn.setActionCommand("edit-word");
         searchBySlangBtn.addActionListener(hc);
         searchByDefBtn.addActionListener(hc);
         showHistoryBtn.addActionListener(hc);
         addNewWordBtn.addActionListener(hc);
+        editWordBtn.addActionListener(hc);
         left.add(searchBySlangBtn);
         left.add(searchByDefBtn);
         left.add(showHistoryBtn);
         left.add(addNewWordBtn);
+        left.add(editWordBtn);
 
         JPanel searchBySlangCard = new JPanel();
         JPanel searchBySlangHeading = new JPanel();
@@ -121,6 +126,35 @@ public class Main implements ActionListener {
         addNewWordCard.add(addNewWordCardContainer, BorderLayout.PAGE_START);
         right.add(addNewWordCard, "add-word");
 
+        JPanel editWordCard = new JPanel();
+        JPanel editWordContainer = new JPanel();
+        editWordCard.setLayout(new BorderLayout());
+        editWordContainer.setLayout(new GridBagLayout());
+        JLabel editSlangLabel = new JLabel("Enter slang");
+        editSlangInput = new JTextField(20);
+        JLabel editDefLabel = new JLabel("Enter definition");
+        editDefInput = new JTextField(20);
+        JButton editWordSubmitBtn = new JButton("Edit");
+        editWordSubmitBtn.setActionCommand("edit-word-submit");
+        editWordSubmitBtn.addActionListener(this);
+        c.gridx =0;
+        c.gridy = 0;
+        editWordContainer.add(editSlangLabel, c);
+        c.gridx = 1;
+        c.gridy = 0;
+        editWordContainer.add(editSlangInput, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        editWordContainer.add(editDefLabel, c);
+        c.gridx = 1;
+        c.gridy = 1;
+        editWordContainer.add(editDefInput, c);
+        c.gridx = 0;
+        c.gridy = 2;
+        editWordContainer.add(editWordSubmitBtn, c);
+        editWordCard.add(editWordContainer, BorderLayout.PAGE_START);
+        right.add(editWordCard, "edit-word");
+
         container.add(left, BorderLayout.LINE_START);
         container.add(right, BorderLayout.CENTER);
 
@@ -163,18 +197,35 @@ public class Main implements ActionListener {
                 String value = inputDefInput.getText();
 
                 //Yes 0 No 1 Cancel 2 x -1
-                if (!Objects.equals(list.get(slang), "null")) {
+                if (list.get(slang) != null) {
                     int choice = JOptionPane.showConfirmDialog(frame, "Word already exist. Yes to overwrite. No to duplicate");
                     if (choice == 0) {
                         list.put(slang, value);
+                        utils.showDialog(frame, "Add success");
                     }
                     else if (choice == 1) {
                         list.put(slang, list.get(slang) + " | " + value);
+                        utils.showDialog(frame, "Add success");
                     }
                 }
                 else {
                     list.put(slang, value);
+                    utils.showDialog(frame, "Add success");
                 }
+                break;
+            }
+            case "edit-word-submit": {
+                String slangEdit = editSlangInput.getText();
+                String defEdit = editDefInput.getText();
+
+                if (list.get(slangEdit) == null) {
+                    utils.showDialog(frame, "Slang not found");
+                }
+                else {
+                    list.put(slangEdit, defEdit);
+                    utils.showDialog(frame, "Edit success");
+                }
+                break;
             }
         }
     }

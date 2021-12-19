@@ -37,6 +37,11 @@ public class HandleCard implements ActionListener {
             }
             case "add-word": {
                 cl.show(card, "add-word");
+                break;
+            }
+            case "edit-word": {
+                cl.show(card, "edit-word");
+                break;
             }
             default:
                 break;
