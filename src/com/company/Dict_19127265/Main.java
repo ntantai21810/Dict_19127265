@@ -19,6 +19,7 @@ public class Main implements ActionListener {
     JTextField searchBySlangInput, searchByDefInput;
     JTextField inputSlangInput, inputDefInput;
     JTextField editSlangInput, editDefInput;
+    JTextField deleteSlangInput;
 
     public Main() {
         JPanel right = new JPanel();
@@ -34,22 +35,26 @@ public class Main implements ActionListener {
         JButton showHistoryBtn = new JButton("Show history");
         JButton addNewWordBtn = new JButton("Add new word");
         JButton editWordBtn = new JButton("Edit word");
+        JButton deleteWordBtn = new JButton("Delete word");
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         searchBySlangBtn.setActionCommand("search-by-slang");
         searchByDefBtn.setActionCommand("search-by-def");
         showHistoryBtn.setActionCommand("show-history");
         addNewWordBtn.setActionCommand("add-word");
         editWordBtn.setActionCommand("edit-word");
+        deleteWordBtn.setActionCommand("delete-word");
         searchBySlangBtn.addActionListener(hc);
         searchByDefBtn.addActionListener(hc);
         showHistoryBtn.addActionListener(hc);
         addNewWordBtn.addActionListener(hc);
         editWordBtn.addActionListener(hc);
+        deleteWordBtn.addActionListener(hc);
         left.add(searchBySlangBtn);
         left.add(searchByDefBtn);
         left.add(showHistoryBtn);
         left.add(addNewWordBtn);
         left.add(editWordBtn);
+        left.add(deleteWordBtn);
 
         JPanel searchBySlangCard = new JPanel();
         JPanel searchBySlangHeading = new JPanel();
@@ -155,6 +160,27 @@ public class Main implements ActionListener {
         editWordCard.add(editWordContainer, BorderLayout.PAGE_START);
         right.add(editWordCard, "edit-word");
 
+        JPanel deleteWordCard = new JPanel();
+        JPanel deleteWordContainer = new JPanel();
+        deleteWordCard.setLayout(new BorderLayout());
+        deleteWordContainer.setLayout(new GridBagLayout());
+        JLabel deleteSlangLabel = new JLabel("Enter slang");
+        deleteSlangInput = new JTextField(20);
+        JButton deleteWordSubmitBtn = new JButton("Delete");
+        deleteWordSubmitBtn.setActionCommand("delete-word-submit");
+        deleteWordSubmitBtn.addActionListener(this);
+        c.gridx =0;
+        c.gridy = 0;
+        deleteWordContainer.add(deleteSlangLabel, c);
+        c.gridx = 1;
+        c.gridy = 0;
+        deleteWordContainer.add(deleteSlangInput, c);
+        c.gridx = 0;
+        c.gridy = 2;
+        deleteWordContainer.add(deleteWordSubmitBtn, c);
+        deleteWordCard.add(deleteWordContainer, BorderLayout.PAGE_START);
+        right.add(deleteWordCard, "delete-word");
+
         container.add(left, BorderLayout.LINE_START);
         container.add(right, BorderLayout.CENTER);
 
@@ -224,6 +250,22 @@ public class Main implements ActionListener {
                 else {
                     list.put(slangEdit, defEdit);
                     utils.showDialog(frame, "Edit success");
+                }
+                break;
+            }
+            case "delete-word-submit": {
+                String slang = deleteSlangInput.getText();
+
+                if (list.get(slang) == null) {
+                    utils.showDialog(frame, "Slang not found");
+                }
+                else {
+                    int input = JOptionPane.showConfirmDialog(frame, "Do you want to delete?");
+                    //Yes 0 No 1 Cancel 2 Exit -1
+                    if (input == 0) {
+                        list.remove(slang);
+                        utils.showDialog(frame, "Delete success");
+                    }
                 }
                 break;
             }

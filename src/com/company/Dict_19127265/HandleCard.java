@@ -43,6 +43,10 @@ public class HandleCard implements ActionListener {
                 cl.show(card, "edit-word");
                 break;
             }
+            case "delete-word": {
+                cl.show(card, "delete-word");
+                break;
+            }
             default:
                 break;
         }
