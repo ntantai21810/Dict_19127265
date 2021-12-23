@@ -36,6 +36,7 @@ public class Main implements ActionListener {
         JButton addNewWordBtn = new JButton("Add new word");
         JButton editWordBtn = new JButton("Edit word");
         JButton deleteWordBtn = new JButton("Delete word");
+        JButton resetWordBtn = new JButton("Reset default slang word");
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         searchBySlangBtn.setActionCommand("search-by-slang");
         searchByDefBtn.setActionCommand("search-by-def");
@@ -43,18 +44,21 @@ public class Main implements ActionListener {
         addNewWordBtn.setActionCommand("add-word");
         editWordBtn.setActionCommand("edit-word");
         deleteWordBtn.setActionCommand("delete-word");
+        resetWordBtn.setActionCommand("reset-word");
         searchBySlangBtn.addActionListener(hc);
         searchByDefBtn.addActionListener(hc);
         showHistoryBtn.addActionListener(hc);
         addNewWordBtn.addActionListener(hc);
         editWordBtn.addActionListener(hc);
         deleteWordBtn.addActionListener(hc);
+        resetWordBtn.addActionListener(this);
         left.add(searchBySlangBtn);
         left.add(searchByDefBtn);
         left.add(showHistoryBtn);
         left.add(addNewWordBtn);
         left.add(editWordBtn);
         left.add(deleteWordBtn);
+        left.add(resetWordBtn);
 
         JPanel searchBySlangCard = new JPanel();
         JPanel searchBySlangHeading = new JPanel();
@@ -267,6 +271,11 @@ public class Main implements ActionListener {
                         utils.showDialog(frame, "Delete success");
                     }
                 }
+                break;
+            }
+            case "reset-word": {
+                list = utils.readFile(frame, "slang.txt");
+                utils.showDialog(frame, "Reset success");
                 break;
             }
         }
