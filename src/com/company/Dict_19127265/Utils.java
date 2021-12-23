@@ -24,7 +24,7 @@ public class Utils {
 
         dialog.add(label);
 
-        dialog.setSize(300, 100);
+        dialog.setSize(500, 200);
         dialog.setVisible(true);
     }
 

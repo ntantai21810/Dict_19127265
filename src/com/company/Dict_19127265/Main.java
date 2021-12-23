@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 public class Main implements ActionListener {
     public Utils utils = new Utils();
@@ -37,6 +38,7 @@ public class Main implements ActionListener {
         JButton editWordBtn = new JButton("Edit word");
         JButton deleteWordBtn = new JButton("Delete word");
         JButton resetWordBtn = new JButton("Reset default slang word");
+        JButton randomSlangWord = new JButton("Random a slang word");
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         searchBySlangBtn.setActionCommand("search-by-slang");
         searchByDefBtn.setActionCommand("search-by-def");
@@ -45,6 +47,7 @@ public class Main implements ActionListener {
         editWordBtn.setActionCommand("edit-word");
         deleteWordBtn.setActionCommand("delete-word");
         resetWordBtn.setActionCommand("reset-word");
+        randomSlangWord.setActionCommand("random-slang");
         searchBySlangBtn.addActionListener(hc);
         searchByDefBtn.addActionListener(hc);
         showHistoryBtn.addActionListener(hc);
@@ -52,6 +55,7 @@ public class Main implements ActionListener {
         editWordBtn.addActionListener(hc);
         deleteWordBtn.addActionListener(hc);
         resetWordBtn.addActionListener(this);
+        randomSlangWord.addActionListener(this);
         left.add(searchBySlangBtn);
         left.add(searchByDefBtn);
         left.add(showHistoryBtn);
@@ -59,6 +63,7 @@ public class Main implements ActionListener {
         left.add(editWordBtn);
         left.add(deleteWordBtn);
         left.add(resetWordBtn);
+        left.add(randomSlangWord);
 
         JPanel searchBySlangCard = new JPanel();
         JPanel searchBySlangHeading = new JPanel();
@@ -276,6 +281,13 @@ public class Main implements ActionListener {
             case "reset-word": {
                 list = utils.readFile(frame, "slang.txt");
                 utils.showDialog(frame, "Reset success");
+                break;
+            }
+            case "random-slang": {
+                List<String> keysList = new ArrayList<String>(list.keySet());
+                int randomIndex = new Random().nextInt(keysList.size());
+                String message = keysList.get(randomIndex) + "   ===>   " + list.get(keysList.get(randomIndex));
+                utils.showDialog(frame, message);
                 break;
             }
         }
