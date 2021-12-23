@@ -39,6 +39,8 @@ public class Main implements ActionListener {
         JButton deleteWordBtn = new JButton("Delete word");
         JButton resetWordBtn = new JButton("Reset default slang word");
         JButton randomSlangWord = new JButton("Random a slang word");
+        JButton quizBySlang = new JButton("Quiz by slang");
+        JButton quizByWord = new JButton("Quiz by word");
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         searchBySlangBtn.setActionCommand("search-by-slang");
         searchByDefBtn.setActionCommand("search-by-def");
@@ -48,6 +50,8 @@ public class Main implements ActionListener {
         deleteWordBtn.setActionCommand("delete-word");
         resetWordBtn.setActionCommand("reset-word");
         randomSlangWord.setActionCommand("random-slang");
+        quizBySlang.setActionCommand("quiz-by-slang");
+        quizByWord.setActionCommand("quiz-by-word");
         searchBySlangBtn.addActionListener(hc);
         searchByDefBtn.addActionListener(hc);
         showHistoryBtn.addActionListener(hc);
@@ -56,6 +60,8 @@ public class Main implements ActionListener {
         deleteWordBtn.addActionListener(hc);
         resetWordBtn.addActionListener(this);
         randomSlangWord.addActionListener(this);
+        quizBySlang.addActionListener(this);
+        quizByWord.addActionListener(this);
         left.add(searchBySlangBtn);
         left.add(searchByDefBtn);
         left.add(showHistoryBtn);
@@ -64,6 +70,8 @@ public class Main implements ActionListener {
         left.add(deleteWordBtn);
         left.add(resetWordBtn);
         left.add(randomSlangWord);
+        left.add(quizBySlang);
+        left.add(quizByWord);
 
         JPanel searchBySlangCard = new JPanel();
         JPanel searchBySlangHeading = new JPanel();
@@ -284,10 +292,94 @@ public class Main implements ActionListener {
                 break;
             }
             case "random-slang": {
-                List<String> keysList = new ArrayList<String>(list.keySet());
+                List<String> keysList = new ArrayList<>(list.keySet());
                 int randomIndex = new Random().nextInt(keysList.size());
                 String message = keysList.get(randomIndex) + "   ===>   " + list.get(keysList.get(randomIndex));
                 utils.showDialog(frame, message);
+                break;
+            }
+            case "quiz-by-slang": {
+                List<String> keysList = new ArrayList<>(list.keySet());
+                Vector<Integer> ans = new Vector<>();
+                int idx1 = new Random().nextInt(keysList.size());
+                int idx2 = new Random().nextInt(keysList.size());
+                int idx3 = new Random().nextInt(keysList.size());
+                int idx4 = new Random().nextInt(keysList.size());
+                ans.add(idx1);
+                ans.add(idx2);
+                ans.add(idx3);
+                ans.add(idx4);
+                int idxAns = new Random().nextInt(4);
+                JRadioButton ans1 = new JRadioButton(list.get(keysList.get(idx1)));
+                JRadioButton ans2 = new JRadioButton(list.get(keysList.get(idx2)));
+                JRadioButton ans3 = new JRadioButton(list.get(keysList.get(idx3)));
+                JRadioButton ans4 = new JRadioButton(list.get(keysList.get(idx4)));
+                JDialog dialog = new JDialog(frame, "Quiz by slang");
+                JLabel label = new JLabel(keysList.get(ans.get(idxAns)));
+                JPanel container = new JPanel();
+                container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+                container.add(label);
+                container.add(ans1);
+                container.add(ans2);
+                container.add(ans3);
+                container.add(ans4);
+                dialog.add(container);
+
+                ans1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx1 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+                ans2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx2 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+                ans3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx3 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+                ans4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx4 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+
+                dialog.setSize(500, 300);
+                dialog.setVisible(true);
+                break;
+            }
+            case "quiz-by-word": {
+                System.out.println(2);
                 break;
             }
         }
