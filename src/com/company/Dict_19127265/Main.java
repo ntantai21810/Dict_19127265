@@ -379,7 +379,83 @@ public class Main implements ActionListener {
                 break;
             }
             case "quiz-by-word": {
-                System.out.println(2);
+                List<String> keysList = new ArrayList<>(list.keySet());
+                Vector<Integer> ans = new Vector<>();
+                int idx1 = new Random().nextInt(keysList.size());
+                int idx2 = new Random().nextInt(keysList.size());
+                int idx3 = new Random().nextInt(keysList.size());
+                int idx4 = new Random().nextInt(keysList.size());
+                ans.add(idx1);
+                ans.add(idx2);
+                ans.add(idx3);
+                ans.add(idx4);
+                int idxAns = new Random().nextInt(4);
+                JRadioButton ans1 = new JRadioButton(keysList.get(idx1));
+                JRadioButton ans2 = new JRadioButton(keysList.get(idx2));
+                JRadioButton ans3 = new JRadioButton(keysList.get(idx3));
+                JRadioButton ans4 = new JRadioButton(keysList.get(idx4));
+                JDialog dialog = new JDialog(frame, "Quiz by Word");
+                JLabel label = new JLabel(list.get(keysList.get(ans.get(idxAns))));
+                JPanel container = new JPanel();
+                container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+                container.add(label);
+                container.add(ans1);
+                container.add(ans2);
+                container.add(ans3);
+                container.add(ans4);
+                dialog.add(container);
+
+                ans1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx1 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+                ans2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx2 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+                ans3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx3 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+                ans4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                        if (idx4 == ans.get(idxAns)) {
+                            utils.showDialog(frame, "Correct");
+                        }
+                        else {
+                            utils.showDialog(frame, "Incorrect");
+                        }
+                    }
+                });
+
+                dialog.setSize(500, 300);
+                dialog.setVisible(true);
                 break;
             }
         }
