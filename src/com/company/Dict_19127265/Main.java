@@ -14,7 +14,7 @@ public class Main implements ActionListener {
     String[] columns = new String[]{"Slang", "Definition"};
     public HashMap<String, String> filter = new HashMap<>();
     public HashMap<String, String> filterDef = new HashMap<>();
-    public HashMap<String, String> list = utils.readFile(frame, "slang.txt");
+    public HashMap<String, String> list = utils.readFile(frame, "main.txt");
     public LinkedList<String> historyList = new LinkedList<>();
     JTable searchBySlangTable, searchByDefTable, historyTable;
     JTextField searchBySlangInput, searchByDefInput;
@@ -245,15 +245,18 @@ public class Main implements ActionListener {
                     if (choice == 0) {
                         list.put(slang, value);
                         utils.showDialog(frame, "Add success");
+                        utils.writeFile(frame, "main.txt", list);
                     }
                     else if (choice == 1) {
                         list.put(slang, list.get(slang) + " | " + value);
                         utils.showDialog(frame, "Add success");
+                        utils.writeFile(frame, "main.txt", list);
                     }
                 }
                 else {
                     list.put(slang, value);
                     utils.showDialog(frame, "Add success");
+                    utils.writeFile(frame, "main.txt", list);
                 }
                 break;
             }
@@ -267,6 +270,7 @@ public class Main implements ActionListener {
                 else {
                     list.put(slangEdit, defEdit);
                     utils.showDialog(frame, "Edit success");
+                    utils.writeFile(frame, "main.txt", list);
                 }
                 break;
             }
@@ -282,6 +286,7 @@ public class Main implements ActionListener {
                     if (input == 0) {
                         list.remove(slang);
                         utils.showDialog(frame, "Delete success");
+                        utils.writeFile(frame, "main.txt", list);
                     }
                 }
                 break;
@@ -289,6 +294,7 @@ public class Main implements ActionListener {
             case "reset-word": {
                 list = utils.readFile(frame, "slang.txt");
                 utils.showDialog(frame, "Reset success");
+                utils.writeFile(frame, "main.txt", list);
                 break;
             }
             case "random-slang": {

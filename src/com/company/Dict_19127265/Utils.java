@@ -1,9 +1,7 @@
 package com.company.Dict_19127265;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -86,4 +84,30 @@ public class Utils {
 
         return list;
     }
+
+    public void writeFile(JFrame frame, String path, HashMap<String, String> list) {
+        BufferedWriter bw = null;
+
+        try {
+            bw = new BufferedWriter(new FileWriter(path));
+        } catch (Exception e) {
+            showDialog(frame, e.getMessage());
+            return;
+        }
+
+        for (Map.Entry<String, String> entry : list.entrySet()) {
+            try {
+                bw.write(entry.getKey() + "`" + entry.getValue() + System.lineSeparator());
+            } catch (Exception e) {
+                showDialog(frame, e.getMessage());
+            }
+        }
+
+        try {
+            bw.close();
+        } catch (Exception e) {
+            showDialog(frame, e.getMessage());
+        }
+    }
+
 }
