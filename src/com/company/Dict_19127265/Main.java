@@ -15,7 +15,7 @@ public class Main implements ActionListener {
     public HashMap<String, String> filter = new HashMap<>();
     public HashMap<String, String> filterDef = new HashMap<>();
     public HashMap<String, String> list = utils.readFile(frame, "main.txt");
-    public LinkedList<String> historyList = new LinkedList<>();
+    public LinkedList<String> historyList = utils.readHistory(frame, "history.txt");
     JTable searchBySlangTable, searchByDefTable, historyTable;
     JTextField searchBySlangInput, searchByDefInput;
     JTextField inputSlangInput, inputDefInput;
@@ -220,6 +220,10 @@ public class Main implements ActionListener {
                 filter.clear();
                 filter.put(searchString, value);
                 historyList.addFirst(searchString + "`" + value);
+                if (historyList.size() > 200) {
+                    historyList.removeLast();
+                }
+                utils.writeFile(frame, "history.txt", historyList);
                 searchBySlangTable.setModel(new DefaultTableModel(utils.convertToObjectArray(filter), columns));
                 historyTable.setModel(new DefaultTableModel(utils.convertToObjectArray(historyList), columns));
                 break;

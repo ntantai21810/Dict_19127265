@@ -49,7 +49,7 @@ public class Utils {
         HashMap<String, String> list = new HashMap<>();
 
         if (!f.isFile()) {
-            showDialog(frame, "File not found");
+            showDialog(frame, "File slang word not found");
             return list;
         }
 
@@ -85,6 +85,45 @@ public class Utils {
         return list;
     }
 
+    public LinkedList<String> readHistory(JFrame frame, String path) {
+        File f = new File(path);
+
+        LinkedList<String> list = new LinkedList<>();
+
+        if (!f.isFile()) {
+            showDialog(frame, "File history not found");
+            return list;
+        }
+
+        //File is not empty
+        if (f.length() != 0) {
+            BufferedReader br = null;
+
+            try {
+                br = new BufferedReader(new FileReader(path));
+            } catch (Exception e) {
+                showDialog(frame, e.getMessage());
+            }
+
+            String s;
+            do {
+                s = null;
+
+                try {
+                    s = br != null ? br.readLine() : null;
+                } catch (Exception e) {
+                    showDialog(frame, e.getMessage());
+                }
+
+                if (s != null) {
+                    list.addLast(s);
+                }
+            } while (s != null);
+        }
+
+        return list;
+    }
+
     public void writeFile(JFrame frame, String path, HashMap<String, String> list) {
         BufferedWriter bw = null;
 
@@ -104,10 +143,36 @@ public class Utils {
         }
 
         try {
+            bw.flush();
             bw.close();
         } catch (Exception e) {
             showDialog(frame, e.getMessage());
         }
     }
+    public void writeFile(JFrame frame, String path, LinkedList<String> list) {
+        BufferedWriter bw = null;
 
+        try {
+            bw = new BufferedWriter(new FileWriter(path));
+        } catch (Exception e) {
+            showDialog(frame, e.getMessage());
+            return;
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            try {
+                bw.write(list.get(i));
+                bw.newLine();
+            } catch (Exception e) {
+                showDialog(frame, e.getMessage());
+            }
+        }
+
+        try {
+            bw.flush();
+            bw.close();
+        } catch (Exception e) {
+            showDialog(frame, e.getMessage());
+        }
+    }
 }
